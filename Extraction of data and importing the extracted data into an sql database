@@ -1,0 +1,1138 @@
+# importing openpyxl module 
+import openpyxl
+import dateutil
+from datetime import datetime, timedelta, date
+import time
+import pypyodbc
+from openpyxl.utils import get_column_letter, column_index_from_string
+from itertools import islice
+import json
+import os
+import math
+import pandas as pd
+import array
+import csv
+import xlrd
+import pyodbc
+import shutil
+import socket
+import datetime
+import json
+from array import *
+import re
+from collections import *
+
+
+try:
+   source = "C:\\INFOLDER\\pro list"
+   destination = "C:\\PROCESSINGFOLDER"
+   shutil.move(source, destination)
+except Exception as e:
+        print('Failed to move %s. Reason: %s' % (e))
+# Give the Directory of the file 
+my_directory = "C:\\PROCESSINGFOLDER"
+
+
+
+#  search added 2020/06/13
+def find_index(arr, name,v_myloc):
+    for n in range(1,len(arr)-1):
+       if arr[n] == name:
+          v_myloc = n
+       else:
+          v_myloc = -1
+
+# end of search
+
+# workbook object is created 
+
+with os.scandir(my_directory) as entries:
+    for entry in entries:
+        print(entry.name)
+        ext_name=entry.name
+        if ext_name.endswith('.xlsx'):
+
+         wb_obj = openpyxl.load_workbook(entry) 
+  
+         sheet_obj = wb_obj.active 
+         m_row = sheet_obj.max_row 
+         m_col = sheet_obj.max_column
+         
+         result = []
+         transactions = {}
+         summary = {}
+
+         v_counter = 0
+         print("XXXX No of rows: ", m_row)
+         print("YYYY No of Col: ",m_col)
+
+         
+         
+         relevantRows = []
+
+         for i in range(2, m_row + 1):
+            row = []
+            if sheet_obj.cell(row=i, column=1).value is None:
+               continue
+
+            data1 = sheet_obj.cell(row=i, column=1).value
+         
+            part1 = data1
+
+            print("part1: ", part1)
+
+            for k in range(1, m_col+1):  
+   
+               cell_obj = sheet_obj.cell(row = i, column = k) 
+               row.append(cell_obj.value)
+               continue
+              
+            print("row:",row)  
+            wb = xlrd.open_workbook('C:\\ExcelTest\\ExcelData\\******')
+            sh = wb.sheet_by_index(0)
+            settings ={}
+            for rownum in range(1, sh.nrows):
+                  row_values = sh.row_values(rownum)
+                  serverr= str(row_values[0]).strip()
+                  uidd=str(row_values[1]).strip()
+                  passwdd=str(row_values[2]).strip()
+                  databasee=str(row_values[3]).strip()
+                  break
+            server = '*****' 
+            database = ' pro prolist'
+            username = '*****' 
+            password = '*****'
+
+            con=pyodbc.connect('DRIVER={SQL Server Native Client 11.0};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password, trusted_connection='yes') 
+            cursor = con.cursor()
+            x = datetime.datetime.now()
+            format = "%d/%m/%Y"
+             proSeqId=''
+            #   prolist=str(row[0])
+             proAction=''
+             proActionDate=''
+             proGender=str(row[6])
+             proStatus=''
+             proDOB=str(row[7])
+             proAltDOB=''
+             proPOB=str(row[24])
+             proAddress=str(row[11])
+             proCity=''
+             proCounty=''
+             proCountry='ITY'
+             proTitle=str(row[4])
+             proFirstName=str(row[2])
+             proMiddleName=str(row[3])
+             proSurname=str(row[1])
+             proFullName=''
+             proUrl=''
+             proTags=str(row[31])
+             proCategory='tit'
+             proWatchType='INDIVIDUAL'
+             proTier=''
+             proLanguage='En'
+             proRecordDate=x 
+             proRecordTime=x.strftime("%X")
+             proOperator='SYSTEM'
+             proOperation='CREATE'
+             proWorkstation=socket.gethostname()
+             proRecordCounter=1
+            # contacts
+             proNote=str(row[29])
+             proBusinessInterest=str(row[21])
+             proEmailAddress=str(row[28])
+            # Descriptions
+             proDescription=str(row[10])
+             proProfession=str(row[12])
+            # Associates
+            #pepAssocId=str(row[20])
+             proRelNames=''
+            firstNames=''
+            spouses=str(row[15])
+            children=str(row[16])
+            sibling=str(row[17])
+            parent=str(row[18])
+            # placeholder for title
+            #array1=array
+            array1 = ['Dr. (Mrs.)','Dr','Dr.','Mrs','Mr','Ms','Mrs.','Late','Dr Mrs',' Mr',' Ms.',' Mr.',' Ms','Chief (Mrs)','Miss','Miss','Engr','Engr.','Prince','Hon.','Alhaji','Princess','Professor','Prophetess','Alhaja']
+            # # placeholder for sibling names
+            sib_title=''
+            sib_firstName=''
+            sib_middleName=''
+            sib_lastName=''
+            # placeholder for children names
+            child_title=''
+            child_firstName=''
+            child_middleName=''
+            child_lastName=''
+            # placeholder for spouses names
+            spouses_title=''
+            spouses_firstName=''
+            spouses_middleName=''
+            spouses_lastName=''
+           # Sanction
+             prolistCode='tit'
+             proStartDate=str(row[26])
+             proEndDate=''
+             proStatus=''
+             proDescription1=str(row[27])
+             proDescription2=str(row[25])
+            noneee=''
+            if (noneee=='None'):
+                   noneee=''
+            else:
+                   noneee=''       
+
+             proOtherNames=noneee
+             proSubCategory=noneee
+             proPostalCode=noneee
+             proImageLink=noneee
+           # place holder for fullname in  pro prolist
+            name_1=str(row[2])
+            name_2=str(row[3])
+            name_3=str(row[1])
+            if (name_1=='None'):
+                   name_1=''
+            else:
+               name_1=name_1
+
+            if (name_2=='None'):
+                   name_2=''
+            else:
+               name_2=name_2
+            
+            if (name_3=='None'):
+                   name_3=''
+            else:
+               name_3=name_3
+            tname=(name_1+' '+name_2+' '+name_3)
+            
+             proName=tname
+
+            if(noneee=='None'):
+                   noneee=''
+            else:
+               noneee=noneee
+
+            if( proOtherNames=='None'):
+                    proOtherNames=''
+            else:
+                proOtherNames= proOtherNames
+
+            
+            if( proStartDate=='None'):
+                    proStartDate=''
+            else:
+                proStartDate= proStartDate
+
+            if( proDescription1=='None'):
+                 proDescription1=''
+            else:
+                 proDescription1= proDescription1
+
+            if( proDescription2=='None'):
+                proDescription2=''
+            else:
+                proDescription2= proDescription2
+
+
+
+            if( proDescription=='None'):
+                proDescription=''
+            else:
+                proDescription= proDescription
+
+            if( proProfession=='None'):
+                 proProfession=''
+            else:
+                 proProfession= proProfession
+
+            if( proNote=='None'):
+                proNote=''
+            else:
+                proNote= proNote
+            if( proBusinessInterest=='None'):
+                 proBusinessInterest=''
+            else:
+                 proBusinessInterest= proBusinessInterest
+            if( proEmailAddress=='None'):
+                    proEmailAddress=''
+            else:
+                proEmailAddress= proEmailAddress
+
+            
+            if ( proDOB=='None'):
+                   proDOB='01/01/1900'
+                   proAltDOB='Date of birth not available'
+            else:
+                   proDOB= proDOB
+
+            if( proAddress=='None'):
+                proAddress=''
+            else:
+                proAddress= proAddress
+
+            if( proTitle=='None'):
+                proTitle=''
+            else:
+                proTitle= proTitle
+
+            if( proFirstName=='None'):
+                proFirstName=''
+            else:
+                proFirstName= proFirstName
+
+            if( proMiddleName=='None'):
+                proMiddleName=''
+            else:
+                proMiddleName= proMiddleName
+            
+            if( proSurname=='None'):
+                proSurname=''
+            else:
+                proSurname= proSurname
+
+            if( proUrl=='None'):
+                proUrl=''
+            else:
+                proUrl= proUrl
+
+            if( proTags=='None'):
+               icproTags=''
+            else:
+                proTags= proTags
+            
+            if( proPOB=='None'):
+                    proPOB=''
+            else:
+                proPOB= proPOB
+            
+
+            def without_non_alphabet():
+                   pattern = re.compile("\W")
+                    proFullName = pattern.sub('',tname)
+                   return  proFullName
+             proFullName=without_non_alphabet()
+
+            print( proFullName)
+
+            def watchId():
+                   strss= proFullName
+                   strs=strss.split(' ')
+                   strss1=''
+                   for char in strs:
+                          if len(char)>1:
+                                 if len(char)==5:
+                                        strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4]))
+                                        return strss1
+                                 if len(char)==6:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5]))
+                                       return strss1
+                                 if len(char)==7:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5])+ord(char[6]))
+                                       return strss1
+                                 if len(char)==8:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5])+
+                                       ord(char[6])+ord(char[7]))
+                                       return strss1
+                                 if len(char)==9:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5])+
+                                       ord(char[6])+ord(char[7])+ord(char[8]))
+                                       return strss1
+                                 if len(char)>9:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5])+
+                                       ord(char[6])+ord(char[7])+ord(char[8])+ord(char[9]))
+                                       return strss1
+                                 return strss
+            watchID=watchId()
+
+              prolist =  proFirstName +'-'+ watchID
+
+            def AsswatchId():
+                   strss= proFullName
+                   strs=strss.split(' ')
+                   strss1=''
+                   for char in strs:
+                          if len(char)>1:
+                                 if len(char)==5:
+                                        strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4]))
+                                        return strss1
+                                 if len(char)==6:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5]))
+                                       return strss1
+                                 if len(char)==7:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5])+ord(char[6]))
+                                       return strss1
+                                 if len(char)==8:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5])+
+                                       ord(char[6])+ord(char[7]))
+                                       return strss1
+                                 if len(char)==9:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5])+
+                                       ord(char[6])+ord(char[7])+ord(char[8]))
+                                       return strss1
+                                 if len(char)>9:
+                                       strss1=str(ord(char[0])+ord(char[1])+ord(char[2])+ord(char[3])+ord(char[4])+ord(char[5])+
+                                       ord(char[6])+ord(char[7])+ord(char[8])+ord(char[9]))
+                                       return strss1
+                                 return strss
+            AsswatchID=AsswatchId()
+
+             prolistAssocId =  proFirstName +'-'+ AsswatchID
+            
+
+      
+            # siblings
+            relNames='siblings'
+            if(sibling=='None'):
+               sibling=''
+            else:
+               findit=", and"
+               replaceit=','
+               sibling = sibling.replace(findit, replaceit)
+               find_it = "and"
+               repl_it = ","
+               sibling = sibling.replace(find_it, repl_it)
+               sibling=sibling.split(",")
+               print('sibling',sibling)
+               if len(sibling) > 1:
+                  for i in sibling:
+                     print('i:',i)
+                     j=i
+                     i=i.split(' ')
+                     if len(i) == 2:
+                        sib_firstName=i[0]
+                        sib_lastName=i[1]
+                        if sib_firstName in array1:
+                           sib_title=sib_firstName
+                           sib_firstName=''
+                        
+                     if(len(i)==3):
+                        sib_title=i[0]
+                        sib_firstName=i[1]
+                        sib_lastName=i[2]
+                        if sib_title in array1:
+                           sib_title=i[0]
+                           sib_firstName=i[1]
+                           sib_middleName=''
+                           sib_lastName=i[2]
+                           if sib_firstName in array1:
+                              sib_title=sib_firstName
+                              sib_firstName=''
+                        else:
+                           sib_title=''
+                           sib_firstName=i[0]
+                           sib_middleName=i[1]
+                           sib_lastName=i[2]
+                           if sib_firstName in array1:
+                              sib_title=sib_firstName
+                              sib_firstName=''
+                     if(len(i)==4):
+                        sib_title=i[0]
+                        sib_firstName=i[1]
+                        sib_middleName=i[2]
+                        sib_lastName=i[3]
+                        if sib_title in array1:
+                           sib_title=i[0]
+                           sib_firstName=i[1]
+                           sib_middleName=i[2]
+                           sib_lastName=i[3]
+                           if sib_firstName in array1:
+                              sib_title=sib_firstName
+                              sib_firstName=''
+                        else:
+                            sib_title=''
+                            sib_firstName=i[1]
+                            sib_middleName=i[2]
+                            sib_lastName=i[3]
+                            if sib_firstName in array1:
+                              sib_title=child_firstName
+                              sib_firstName=''
+
+                     sib_middleName=str(sib_middleName).removeprefix("['")
+                     sib_middleName=str(sib_middleName).removesuffix("']")
+                     sib_middleName=str(sib_middleName).removeprefix('["')
+                     sibling=str(sib_middleName).removesuffix('"]')  
+
+                     sib_lastName=str(sib_lastName).removeprefix("['")
+                     sib_lastName=str(sib_lastName).removesuffix("']")
+                     sib_lastName=str(sib_lastName).removeprefix('["')
+                     sib_lastName=str(sib_lastName).removesuffix('"]')
+
+                     sib_firstName=str(sib_firstName).removeprefix("['")
+                     sib_firstName=str(sib_firstName).removesuffix("']")
+                     sib_firstName=str(sib_firstName).removeprefix('["')
+                     sib_firstName=str(sib_firstName).removesuffix('"]')
+
+                     j=str(j).removeprefix("['")
+                     j=str(j).removesuffix("']")
+                     j=str(j).removeprefix('["')
+                     j=str(j).removesuffix('"]')
+
+                     # if str(sib_middleName)==str(sib_lastName):
+                     #    sib_middleName=''
+                     assosibling=(
+                         proSeqId,
+                          prolist,
+                          prolist,
+                         proRelNames,
+                        str(sib_title),
+                        str(sib_firstName),
+                        str(sib_middleName),
+                        str(sib_lastName),
+                        str(j),
+                         proLanguage,
+                         proRecordDate,
+                         proRecordTime,
+                         proOperator,
+                         proOperation,
+                         proWorkstation,
+                         proRecordCounter
+
+                     )
+                     siblingsqls = ('''
+                        INSERT INTO  proAssociates ( proSeqId,   prolist,  pro prolistAssocId , proRelName, proTitle, proFirstName, proMiddleName, proSurname, proFullName, proLanguage, proRecordDate, proRecordTime, proOperator, proOperation, proWorkstation, proRecordCounter)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)
+                        ''')
+                     cursor.execute(siblingsqls, assosibling)
+               else:
+                  sibling=str(sibling).removeprefix("['")
+                  sibling=sibling.removesuffix("']")
+                  sibling=str(sibling).removeprefix('["')
+                  sibling=sibling.removesuffix('"]')  
+                  sibb=sibling
+                  sibling=sibling.split(' ')
+                  if len(sibling) == 2:
+                        sib_firstName=sibling[0]
+                        sib_lastName=sibling[1]
+                        if sib_firstName in array1:
+                           sib_title=sib_firstName
+                           sib_firstName=''
+                  if len(sibling) == 3:
+                        sib_title=sibling[0]
+                        sib_firstName=sibling[1]
+                        sib_lastName=sibling[2]      
+                        if sib_title in array1:
+                           sib_title=sibling[0]
+                           sib_firstName=sibling[1]
+                           sib_middleName=''
+                           sib_lastName=sibling[2]
+                           if sib_firstName in array1:
+                              sib_title=sib_firstName
+                              sib_firstName=''     
+                        else:
+                           sib_title=''
+                           sib_firstName=sibling[0]
+                           sib_middleName=sibling[1]
+                           child_lastName=sibling[2]
+                           if sib_firstName in array1:
+                              sib_title=sib_firstName
+                              sib_firstName='' 
+                  if len(sibling) == 4:
+                        sib_title=sibling[0]
+                        sib_middleName=sibling[1]
+                        sib_firstName=sibling[2]
+                        sib_lastName=sibling[3]      
+                        if sib_title in array1:
+                            sib_title=sibling[0]
+                            sib_middleName=sibling[1]
+                            sib_firstName=sibling[2]
+                            sib_lastName=sibling[3]
+                            if sib_firstName in array1:
+                              sib_title=sib_firstName
+                              sib_firstName=''       
+                        else:
+                            sib_title=''
+                            sib_title=sibling[0]
+                            sib_middleName=sibling[1]
+                            sib_firstName=sibling[2]
+                            sib_lastName=sibling[3]
+                            if sib_firstName in array1:
+                              sib_title=sib_firstName
+                              sib_firstName=''     
+
+                  sib_middleName=str(sib_middleName).removeprefix("['")
+                  sib_middleName=str(sib_middleName).removesuffix("']")
+                  sib_middleName=str(sib_middleName).removeprefix('["')
+                  sibling=str(sib_middleName).removesuffix('"]')  
+
+                  sib_lastName=str(sib_lastName).removeprefix("['")
+                  sib_lastName=str(sib_lastName).removesuffix("']")
+                  sib_lastName=str(sib_lastName).removeprefix('["')
+                  sib_lastName=str(sib_lastName).removesuffix('"]')
+
+                  sib_firstName=str(sib_firstName).removeprefix("['")
+                  sib_firstName=str(sib_firstName).removesuffix("']")
+                  sib_firstName=str(sib_firstName).removeprefix('["')
+                  sib_firstName=str(sib_firstName).removesuffix('"]')
+
+                  sibb=str(sibb).removeprefix("['")
+                  sibb=str(sibb).removesuffix("']")
+                  sibb=str(sibb).removeprefix('["')
+                  sibb=str(sibb).removesuffix('"]')
+
+                  # if str(sib_middleName)==str(sib_lastName):
+                  #    sib_middleName=''
+
+                  assosibling2=(
+                         proSeqId,
+                          prolist,
+                          prolist,
+                        relNames,
+                        str(sib_title),
+                        str(sib_firstName),
+                        str(sib_middleName),
+                        str(sib_lastName),
+                        str(sibb),
+                         proLanguage,
+                         proRecordDate,
+                         proRecordTime,
+                         proOperator,
+                         proOperation,
+                         proWorkstation,
+                         proRecordCounter
+
+                     )
+                  siblingqls2 = ('''
+                        INSERT INTO  proAssociates ( proSeqId,   prolist,  pro prolistAssocId , proRelName, proTitle, proFirstName, proMiddleName, proSurname, proFullName, proLanguage, proRecordDate, proRecordTime, proOperator, proOperation, proWorkstation, proRecordCounter)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)
+                        ''')
+                  cursor.execute(siblingqls2, assosibling2)
+            # children      
+            relNames='children'
+            if(children=='None'):
+               children=''
+            else:
+               findit=", and"
+               replaceit=','
+               children = children.replace(findit, replaceit)
+               find_it = "and"
+               repl_it = ","
+               children = children.replace(find_it, repl_it)
+               children=children.split(",")
+               print('children',children)
+               if len(children) > 1:
+                  for i in children:
+                     print('i:',i)
+                     j=i
+                     i=i.split(' ')
+                     
+       
+                     if len(i) == 2:
+                        child_firstName=i[0]
+                        child_lastName=i[1]
+                        if child_firstName in array1:
+                           child_title=child_firstName
+                           child_firstName=''
+                        
+                     if(len(i)==3):
+                        child_title=i[0]
+                        child_firstName=i[1]
+                        child_lastName=i[2]
+                        if child_title in array1:
+                           child_title=i[0]
+                           child_firstName=i[1]
+                           child_middleName=''
+                           child_lastName=i[2]
+                           if child_firstName in array1:
+                              child_title=child_firstName
+                              child_firstName=''
+                        else:
+                           child_title=''
+                           child_firstName=i[0]
+                           child_middleName=i[1]
+                           child_lastName=i[2]
+                           if child_firstName in array1:
+                              child_title=child_firstName
+                              child_firstName=''
+                     if(len(i)==4):
+                        child_title=i[0]
+                        child_firstName=i[1]
+                        child_middleName=i[2]
+                        child_lastName=i[3]
+                        if child_title in array1:
+                           child_title=i[0]
+                           child_firstName=i[1]
+                           child_middleName=i[2]
+                           child_lastName=i[3]
+                           if child_firstName in array1:
+                              child_title=child_firstName
+                              child_firstName=''
+                        else:
+                            child_title=''
+                            child_firstName=i[1]
+                            child_middleName=i[2]
+                            child_lastName=i[3]
+                            if child_firstName in array1:
+                              child_title=child_firstName
+                              child_firstName=''
+
+                     
+
+
+
+
+                     child_middleName=str(child_middleName).removeprefix("['")
+                     child_middleName=str(child_middleName).removesuffix("']")
+                     child_middleName=str(child_middleName).removeprefix('["')
+                     children=str(child_middleName).removesuffix('"]')  
+
+                     child_lastName=str(child_lastName).removeprefix("['")
+                     child_lastName=str(child_lastName).removesuffix("']")
+                     child_lastName=str(child_lastName).removeprefix('["')
+                     child_lastName=str(child_lastName).removesuffix('"]')
+
+                     child_firstName=str(child_firstName).removeprefix("['")
+                     child_firstName=str(child_firstName).removesuffix("']")
+                     child_firstName=str(child_firstName).removeprefix('["')
+                     child_firstName=str(child_firstName).removesuffix('"]')
+
+                     j=str(j).removeprefix("['")
+                     j=str(j).removesuffix("']")
+                     j=str(j).removeprefix('["')
+                     j=str(j).removesuffix('"]')
+
+                     assochildren=(
+                         proSeqId,
+                          prolist,
+                          prolist,
+                         proRelNames,
+                        str(child_title),
+                        str(child_firstName),
+                        str(child_middleName),
+                        str(child_lastName),
+                        str(j),
+                         proLanguage,
+                         proRecordDate,
+                         proRecordTime,
+                         proOperator,
+                         proOperation,
+                         proWorkstation,
+                         proRecordCounter
+
+                     )
+                     childrensqls = ('''
+                        INSERT INTO  proAssociates ( proSeqId,   prolist,  pro prolistAssocId , proRelName, proTitle, proFirstName, proMiddleName, proSurname, proFullName, proLanguage, proRecordDate, proRecordTime, proOperator, proOperation, proWorkstation, proRecordCounter)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)
+                        ''')
+                     cursor.execute(childrensqls, assochildren)
+
+                     print('')
+                      
+                    
+               else:
+                  children=str(children).removeprefix("['")
+                  children=children.removesuffix("']")
+                  children=str(children).removeprefix('["')
+                  children=children.removesuffix('"]')  
+                  childd=children
+                  children=children.split(' ')
+                  if len(children) == 2:
+                        child_firstName=children[0]
+                        child_lastName=children[1]
+                        if child_firstName in array1:
+                           child_title=child_firstName
+                           child_firstName=''
+                  if len(children) == 3:
+                        child_title=children[0]
+                        child_firstName=children[1]
+                        child_lastName=children[2]      
+                        if child_title in array1:
+                           child_title=children[0]
+                           child_firstName=children[1]
+                           child_middleName=''
+                           child_lastName=children[2]
+                           if child_firstName in array1:
+                              child_title=child_firstName
+                              child_firstName=''     
+                        else:
+                           child_title=''
+                           child_firstName=children[0]
+                           child_middleName=children[1]
+                           child_lastName=children[2]
+                           if child_firstName in array1:
+                              child_title=child_firstName
+                              child_firstName='' 
+                  if len(children) == 4:
+                        child_title=children[0]
+                        child_middleName=children[1]
+                        child_firstName=children[2]
+                        child_lastName=children[3]      
+                        if child_title in array1:
+                            child_title=children[0]
+                            child_middleName=children[1]
+                            child_firstName=children[2]
+                            child_lastName=children[3]
+                            if child_firstName in array1:
+                              child_title=child_firstName
+                              child_firstName=''       
+                        else:
+                            child_title=''
+                            child_title=children[0]
+                            child_middleName=children[1]
+                            child_firstName=children[2]
+                            child_lastName=children[3]
+                            if child_firstName in array1:
+                              child_title=child_firstName
+                              child_firstName=''     
+                  
+                  child_middleName=str(child_middleName).removeprefix("['")
+                  child_middleName=str(child_middleName).removesuffix("']")
+                  child_middleName=str(child_middleName).removeprefix('["')
+                  children=str(child_middleName).removesuffix('"]')  
+
+                  child_lastName=str(child_lastName).removeprefix("['")
+                  child_lastName=str(child_lastName).removesuffix("']")
+                  child_lastName=str(child_lastName).removeprefix('["')
+                  child_lastName=str(child_lastName).removesuffix('"]')
+
+                  child_firstName=str(child_firstName).removeprefix("['")
+                  child_firstName=str(child_firstName).removesuffix("']")
+                  child_firstName=str(child_firstName).removeprefix('["')
+                  child_firstName=str(child_firstName).removesuffix('"]')
+
+                  childd=str(childd).removeprefix("['")
+                  childd=str(childd).removesuffix("']")
+                  childd=str(childd).removeprefix('["')
+                  childd=str(childd).removesuffix('"]')
+                    
+                  assochildren2=(
+                         proSeqId,
+                          prolist,
+                          prolist,
+                         proRelNames,
+                        str(child_title),
+                        str(child_firstName),
+                        str(child_middleName),
+                        str(child_lastName),
+                        str(childd),
+                         proLanguage,
+                         proRecordDate,
+                         proRecordTime,
+                         proOperator,
+                         proOperation,
+                         proWorkstation,
+                         proRecordCounter
+
+                     )
+                  childrensqls2 = ('''
+                        INSERT INTO  proAssociates ( proSeqId,   prolist,  pro prolistAssocId , proRelName, proTitle, proFirstName, proMiddleName, proSurname, proFullName, proLanguage, proRecordDate, proRecordTime, proOperator, proOperation, proWorkstation, proRecordCounter)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)
+                        ''')
+                  cursor.execute(childrensqls2, assochildren2)
+            # spoouse
+            relNames='spouse'
+            if(spouses=='None'):
+               spouses=''
+            else:
+               findit=", and"
+               replaceit=','
+               spouses = spouses.replace(findit, replaceit)
+               find_it = "and"
+               repl_it = ","
+               spouses = spouses.replace(find_it, repl_it)
+               spouses=spouses.split(",")
+               print('spouses',spouses)
+               if len(spouses) > 1:
+                  for i in spouses:
+                     print('i:',i)
+                     j=i
+                     i=i.split(' ')
+                     if len(i) == 2:
+                        spouses_firstName=i[0]
+                        spouses_lastName=i[1]
+                        if spouses_firstName in array1:
+                           spouses_title=spouses_firstName
+                           spouses_firstName=''
+                        
+                     if(len(i)==3):
+                        spouses_title=i[0]
+                        spouses_firstName=i[1]
+                        spouses_lastName=i[2]
+                        if spouses_title in array1:
+                           spouses_title=i[0]
+                           spouses_firstName=i[1]
+                           spouses_middleName=''
+                           spouses_lastName=i[2]
+                           if spouses_firstName in array1:
+                              spouses_title=spouses_firstName
+                              spouses_firstName=''
+                        else:
+                           spouses_title=''
+                           spouses_firstName=i[0]
+                           spouses_middleName=i[1]
+                           spouses_lastName=i[2]
+                           if spouses_firstName in array1:
+                              spouses_title=spouses_firstName
+                              spouses_firstName=''
+                     if(len(i)==4):
+                        spouses_title=i[0]
+                        spouses_firstName=i[1]
+                        spouses_middleName=i[2]
+                        spouses_lastName=i[3]
+                        if spouses_title in array1:
+                           spouses_title=i[0]
+                           spouses_firstName=i[1]
+                           spouses_middleName=i[2]
+                           spouses_lastName=i[3]
+                           if spouses_firstName in array1:
+                              spouses_title=spouses_firstName
+                              spouses_firstName=''
+                        else:
+                            spouses_title=''
+                            spouses_firstName=i[1]
+                            spouses_middleName=i[2]
+                            spouses_lastName=i[3]
+                            if spouses_firstName in array1:
+                              spouses_title=spouses_firstName
+                              spouses_firstName=''
+
+                     
+
+
+
+
+                     spouses_middleName=str(spouses_middleName).removeprefix("['")
+                     spouses_middleName=str(spouses_middleName).removesuffix("']")
+                     spouses_middleName=str(spouses_middleName).removeprefix('["')
+                     spouses=str(spouses_middleName).removesuffix('"]')  
+
+                     spouses_lastName=str(spouses_lastName).removeprefix("['")
+                     spouses_lastName=str(spouses_lastName).removesuffix("']")
+                     spouses_lastName=str(spouses_lastName).removeprefix('["')
+                     spouses_lastName=str(spouses_lastName).removesuffix('"]')
+
+                     spouses_firstName=str(spouses_firstName).removeprefix("['")
+                     spouses_firstName=str(spouses_firstName).removesuffix("']")
+                     spouses_firstName=str(spouses_firstName).removeprefix('["')
+                     spouses_firstName=str(spouses_firstName).removesuffix('"]')
+
+                     j=str(j).removeprefix("['")
+                     j=str(j).removesuffix("']")
+                     j=str(j).removeprefix('["')
+                     j=str(j).removesuffix('"]')
+
+                     assospouse=(
+                         proSeqId,
+                          prolist,
+                          prolist,
+                         proRelNames,
+                        str(spouses_title),
+                        str(spouses_firstName),
+                        str(spouses_middleName),
+                        str(spouses_lastName),
+                        str(j),
+                         proLanguage,
+                         proRecordDate,
+                         proRecordTime,
+                         proOperator,
+                         proOperation,
+                         proWorkstation,
+                         proRecordCounter
+
+                     )
+                     spousesqls = ('''
+                          INSERT INTO  proAssociates ( proSeqId,   prolist,  pro prolistAssocId , proRelName, proTitle, proFirstName, proMiddleName, proSurname, proFullName, proLanguage, proRecordDate, proRecordTime, proOperator, proOperation, proWorkstation, proRecordCounter)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)
+                        ''')
+                     cursor.execute(spousesqls, assospouse)
+               else:
+                  spouses=str(spouses).removeprefix("['")
+                  spouses=spouses.removesuffix("']")
+                  spouses=str(spouses).removeprefix('["')
+                  spouses=spouses.removesuffix('"]')  
+                  spousess=spouses
+                  spouses=spouses.split(' ')
+                  if len(spouses) == 2:
+                        spouses_firstName=spouses[0]
+                        spouses_lastName=spouses[1]
+                        if spouses_firstName in array1:
+                           spouses_title=spouses_firstName
+                           spouses_firstName=''
+                  if len(spouses) == 3:
+                        spouses_title=spouses[0]
+                        spouses_firstName=spouses[1]
+                        spouses_lastName=spouses[2]      
+                        if spouses_title in array1:
+                           spouses_title=spouses[0]
+                           spouses_firstName=spouses[1]
+                           spouses_middleName=''
+                           spouses_lastName=spouses[2]
+                           if spouses_firstName in array1:
+                              spouses_title=spouses_firstName
+                              spouses_firstName=''     
+                        else:
+                           spouses_title=''
+                           spouses_firstName=spouses[0]
+                           spouses_middleName=spouses[1]
+                           spouses_lastName=spouses[2]
+                           if spouses_firstName in array1:
+                              spouses_title=spouses_firstName
+                              spouses_firstName='' 
+                  if len(spouses) == 4:
+                        spouses_title=spouses[0]
+                        spouses_middleName=spouses[1]
+                        spouses_firstName=spouses[2]
+                        spouses_lastName=spouses[3]      
+                        if spouses_title in array1:
+                            spouses_title=spouses[0]
+                            spouses_middleName=spouses[1]
+                            spouses_firstName=spouses[2]
+                            spouses_lastName=spouses[3]
+                            if spouses_firstName in array1:
+                              spouses_title=spouses_firstName
+                              spouses_firstName=''       
+                        else:
+                            spouses_title=''
+                            spouses_title=spouses[0]
+                            spouses_middleName=spouses[1]
+                            spouses_firstName=spouses[2]
+                            spouses_lastName=spouses[3]
+                            if spouses_firstName in array1:
+                              spouses_title=spouses_firstName
+                              spouses_firstName=''     
+                  
+                  spouses_middleName=str(spouses_middleName).removeprefix("['")
+                  spouses_middleName=str(spouses_middleName).removesuffix("']")
+                  spouses_middleName=str(spouses_middleName).removeprefix('["')
+                  spouses=str(spouses_middleName).removesuffix('"]')  
+
+                  spouses_lastName=str(spouses_lastName).removeprefix("['")
+                  spouses_lastName=str(spouses_lastName).removesuffix("']")
+                  spouses_lastName=str(spouses_lastName).removeprefix('["')
+                  spouses_lastName=str(spouses_lastName).removesuffix('"]')
+
+                  spouses_firstName=str(spouses_firstName).removeprefix("['")
+                  spouses_firstName=str(spouses_firstName).removesuffix("']")
+                  spouses_firstName=str(spouses_firstName).removeprefix('["')
+                  spouses_firstName=str(spouses_firstName).removesuffix('"]')
+
+                  spousess=str(spousess).removeprefix("['")
+                  spousess=str(spousess).removesuffix("']")
+                  spousess=str(spousess).removeprefix('["')
+                  spousess=str(spousess).removesuffix('"]')
+                    
+                  assospouse2=(
+                         proSeqId,
+                          prolist,
+                          prolist,
+                        relNames,
+                        str(spouses_title),
+                        str(spouses_firstName),
+                        str(spouses_middleName),
+                        str(spouses_lastName),
+                        str(spousess),
+                         proLanguage,
+                         proRecordDate,
+                         proRecordTime,
+                         proOperator,
+                         proOperation,
+                         proWorkstation,
+                         proRecordCounter
+
+                     )
+                  spousesqls2 = ('''
+                          INSERT INTO  proAssociates ( proSeqId,   prolist,  pro prolistAssocId , proRelName, proTitle, proFirstName, proMiddleName, proSurname, proFullName, proLanguage, proRecordDate, proRecordTime, proOperator, proOperation, proWorkstation, proRecordCounter)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)
+                        ''')
+                  cursor.execute(spousesqls2, assospouse2)
+             pro prolist = (
+                       prolist,
+                      proTitle,
+                      proFirstName,
+                      proMiddleName,
+                      proSurname,
+                     tname,
+                      proAction,
+                      proActionDate,
+                      proGender,
+                      proStatus,
+                      proDOB,
+                      proAltDOB,
+                      proPOB,
+                      proAddress,
+                      proCity,
+                      proCounty,
+                      proCountry,
+                      proCategory,
+                      proWatchType,
+                      proUrl,
+                      proTags,
+                      proDescription,
+                      proProfession,
+                      proTier,
+                      proLanguage,
+                      proRecordDate,
+                      proRecordTime,
+                      proOperator,
+                      proOperation,
+                      proWorkstation,
+                      proRecordCounter,
+                      proSubCategory,
+                      proPostalCode,
+                      proImageLink,
+                        
+                        )
+            stmt1=(''' INSERT INTO  pro prolist (  prolist,  proTitle,  proFirstName,  proMiddleName,  proSurname,  proFullName,  proAction,  proActionDate,  proGender, proStatus, proDOB, proAltDOB, proPOB, proAddress,  proCity,  proCounty, proCountry, proCategory, proWatchType, proUrl, proTags, proDescription, proProfession, proTier, proLanguage,  proRecordDate,  proRecordTime,  proOperator,  proOperation,  proWorkstation,  proRecordCounter,  proSubCategory,  proPostalCode,  proImageLink)
+                        VALUES (?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?,?,?,?,?,?,?)
+                     ''')
+            cursor.execute(stmt1,  pro prolist)
+
+             proContact = (
+                       prolist,
+                      proNote,
+                      proBusinessInterest,
+                      proEmailAddress,
+                      proLanguage,
+                      proRecordDate,
+                      proRecordTime,
+                      proOperator,
+                      proOperation,
+                      proWorkstation,
+                      proRecordCounter
+                        )
+            stmt2= (''' INSERT INTO  proContact (  prolist,  proNote,  proBusinessInterest,  proEmailAddress,  proLanguage,  proRecordDate,  proRecordTime,  proOperator,  proOperation,  proWorkstation,  proRecordCounter)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+                     ''')
+            cursor.execute(stmt2,  proContact)
+
+             proDescriptions = (
+                       prolist,
+                      proLanguage,
+                      proRecordDate,
+                      proRecordTime,
+                      proOperator,
+                      proOperation,
+                      proWorkstation,
+                      proRecordCounter
+            )
+
+            stmt3= (''' INSERT INTO  proDescriptions (  prolist,  proOfficialAddress,  proLanguage,  proRecordDate,  proRecordTime,  proOperator,  proOperation,  proWorkstation,  proRecordCounter)
+                     VALUES (?,?,?,?,?,?,?,?) ''')
+            cursor.execute(stmt2,  proContact)
+
+
+             proSanctionDetails = (
+                       prolist,
+                      prolistCode,
+                      proStartDate,
+                      proEndDate,
+                      proName,
+                      proStatus,
+                      proDescription1,
+                      proDescription2,
+                      proLanguage,
+                      proRecordDate,
+                      proRecordTime,
+                      proOperator,
+                      proOperation,
+                      proWorkstation,
+                      proRecordCounter
+            )
+            
+            stmt3= (''' INSERT INTO  proSanctionDetails (  prolist,  prolistCode,  proStartDate,  proEndDate,  proName,  proStatus,  proDescription1,  proDescription2,  proLanguage,  proRecordDate,  proRecordTime,  proOperator,  proOperation,  proWorkstation,  proRecordCounter)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ''')
+            cursor.execute(stmt3,  proSanctionDetails)
+
+            con.commit()        
+            relevantRows.append(row)
